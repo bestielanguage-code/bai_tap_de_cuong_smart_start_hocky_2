@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>English Quest - Full Grade 4</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap");
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background-color: #fff0f5; /* Soft pastel pink */
+        color: #4a4a4a;
+      }
+
+      .gacha-btn {
+        transition: all 0.2s ease;
+      }
+      .gacha-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.4);
+      }
+      .gacha-btn:active {
+        transform: scale(0.95);
+      }
+
+      .shake {
+        animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      }
+
+      @keyframes shake {
+        10%,
+        90% {
+          transform: translate3d(-1px, 0, 0);
+        }
+        20%,
+        80% {
+          transform: translate3d(2px, 0, 0);
+        }
+        30%,
+        50%,
+        70% {
+          transform: translate3d(-4px, 0, 0);
+        }
+        40%,
+        60% {
+          transform: translate3d(4px, 0, 0);
+        }
+      }
+
+      .item-terrible {
+        border-color: #9ca3af;
+        background-color: #f3f4f6;
+        color: #4b5563;
+      }
+      .item-common {
+        border-color: #34d399;
+        background-color: #ecfdf5;
+        color: #065f46;
+      }
+      .item-rare {
+        border-color: #60a5fa;
+        background-color: #eff6ff;
+        color: #1e3a8a;
+      }
+      .item-epic {
+        border-color: #a78bfa;
+        background-color: #f5f3ff;
+        color: #5b21b6;
+      }
+      .item-legendary {
+        border-color: #fbbf24;
+        background-color: #fffbeb;
+        color: #92400e;
+        box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #fbcfe8;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f472b6;
+      }
+
+      input[type="text"] {
+        transition: all 0.3s;
+      }
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #f472b6;
+        box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      // --- DỮ LIỆU BÀI TẬP ---
+      const GAME_DATA = [
+        {
+          id: "sec1",
+          title: "I. Circle the odd one out",
+          description: "Tìm từ khác loại trong các nhóm từ sau nhé!",
+          questions: [
+            {
+              id: "1_0",
+              type: "mcq",
+              q: "0.",
+              options: ["stop", "no parking", "go straight", "wash"],
+              ans: 3,
+            },
+            {
+              id: "1_1",
+              type: "mcq",
+              q: "1.",
+              options: ["cute", "pretty", "young", "eyes"],
+              ans: 3,
+            },
+            {
+              id: "1_2",
+              type: "mcq",
+              q: "2.",
+              options: ["subway", "beard", "train", "car"],
+              ans: 1,
+            },
+            {
+              id: "1_3",
+              type: "mcq",
+              q: "3.",
+              options: ["left", "curly", "straight", "short"],
+              ans: 0,
+            },
+            {
+              id: "1_4",
+              type: "mcq",
+              q: "4.",
+              options: ["school", "zoo", "library", "bus"],
+              ans: 3,
+            },
+            {
+              id: "1_5",
+              type: "mcq",
+              q: "5.",
+              options: [
+                "take out the trash",
+                "listen to music",
+                "set the table",
+                "sweep the floor",
+              ],
+              ans: 1,
+            },
+            {
+              id: "1_6",
+              type: "mcq",
+              q: "6.",
+              options: ["Every", "How", "When", "What"],
+              ans: 0,
+            },
+            {
+              id: "1_7",
+              type: "mcq",
+              q: "7.",
+              options: ["yesterday", "today", "last Monday", "last Tuesday"],
+              ans: 1,
+            },
+            {
+              id: "1_8",
+              type: "mcq",
+              q: "8.",
+              options: ["cashier", "doctor", "farmer", "job"],
+              ans: 3,
+            },
+            {
+              id: "1_9",
+              type: "mcq",
+              q: "9.",
+              options: ["breakfast", "lunch", "afternoon", "dinner"],
+              ans: 2,
+            },
+          ],
+        },
+        {
+          id: "sec2",
+          title: "II. Pronunciation",
+          description: "Chọn từ có phần gạch chân phát âm khác nhé!",
+          questions: [
+            {
+              id: "2_1",
+              type: "mcq",
+              q: (
+                <span>
+                  1. c<u>a</u>t / t<u>a</u>ble / s<u>a</u>d / f<u>a</u>t
+                </span>
+              ),
+              options: ["cat", "table", "sad", "fat"],
+              ans: 1,
+            },
+            {
+              id: "2_2",
+              type: "mcq",
+              q: (
+                <span>
+                  2. b<u>oo</u>k / fl<u>oo</u>r / c<u>oo</u>k / g<u>oo</u>d
+                </span>
+              ),
+              options: ["book", "floor", "cook", "good"],
+              ans: 1,
+            },
+            {
+              id: "2_3",
+              type: "mcq",
+              q: (
+                <span>
+                  3. <u>s</u>un / <u>s</u>ure / <u>s</u>ee / <u>s</u>ix
+                </span>
+              ),
+              options: ["sun", "sure", "see", "six"],
+              ans: 1,
+            },
+            {
+              id: "2_4",
+              type: "mcq",
+              q: (
+                <span>
+                  4. <u>g</u>oing / <u>g</u>et / bi<u>g</u> / si<u>g</u>n (gạch
+                  chân chữ g)
+                </span>
+              ),
+              options: ["going", "get", "big", "sign"],
+              ans: 3,
+            },
+            {
+              id: "2_5",
+              type: "mcq",
+              q: (
+                <span>
+                  5. w<u>ea</u>k / sl<u>i</u>m / pr<u>e</u>tty / off<u>i</u>ce
+                </span>
+              ),
+              options: ["weak", "slim", "pretty", "office"],
+              ans: 0,
+            },
+            {
+              id: "2_6",
+              type: "mcq",
+              q: (
+                <span>
+                  6. set<u>s</u> / help<u>s</u> / walk<u>s</u> / feed<u>s</u>
+                </span>
+              ),
+              options: ["sets", "helps", "walks", "feeds"],
+              ans: 3,
+            },
+            {
+              id: "2_7",
+              type: "mcq",
+              q: (
+                <span>
+                  7. sch<u>oo</u>l / l<u>oo</u>k / c<u>oo</u>l / p<u>oo</u>l
+                </span>
+              ),
+              options: ["school", "look", "cool", "pool"],
+              ans: 1,
+            },
+          ],
+        },
+        {
+          id: "sec3",
+          title: "III. Read and match",
+          description: "Chọn đáp án đúng nối với câu miêu tả.",
+          questions: [
+            {
+              id: "3_0",
+              type: "mcq",
+              q: "0. A sign tells you that you may not park there.",
+              options: [
+                "traffic lights",
+                "amusement park",
+                "no parking",
+                "movie theater",
+              ],
+              ans: 2,
+            },
+            {
+              id: "3_1",
+              type: "mcq",
+              q: "1. You can see this set of lights at places where roads meet.",
+              options: ["ears", "traffic lights", "waiter", "amusement park"],
+              ans: 1,
+            },
+            {
+              id: "3_2",
+              type: "mcq",
+              q: "2. Place that has many games and rides.",
+              options: [
+                "amusement park",
+                "movie theater",
+                "school",
+                "hospital",
+              ],
+              ans: 0,
+            },
+            {
+              id: "3_3",
+              type: "mcq",
+              q: "3. We use this body part to hear things.",
+              options: ["eyes", "nose", "ears", "mouth"],
+              ans: 2,
+            },
+            {
+              id: "3_4",
+              type: "mcq",
+              q: "4. This person brings the food to your table in a restaurant.",
+              options: ["doctor", "farmer", "cashier", "waiter"],
+              ans: 3,
+            },
+            {
+              id: "3_5",
+              type: "mcq",
+              q: "5. A place you can watch a movie.",
+              options: ["movie theater", "library", "museum", "park"],
+              ans: 0,
+            },
+          ],
+        },
+        {
+          id: "sec4",
+          title: "IV. Picture Puzzles",
+          description: "Nhìn hình và điền từ thích hợp vào chỗ trống nhé!",
+          questions: [
+            {
+              id: "4_1",
+              type: "text",
+              imgSrc: "images/Picture2.png",
+              q: "1. _ a _ m _ _",
+              ans: ["a farmer", "farmer"],
+            },
+            {
+              id: "4_2",
+              type: "text",
+              imgSrc: "images/Picture3.png",
+              q: "2. _ _ _ d the c _ _",
+              ans: ["feed the cat"],
+            },
+            {
+              id: "4_3",
+              type: "text",
+              imgSrc: "images/Picture4.png",
+              q: "3. _ tr _ _ _",
+              ans: ["strong"],
+            },
+            {
+              id: "4_4",
+              type: "text",
+              imgSrc: "images/Picture5.png",
+              q: "4. m _ _ t _ _ _ e",
+              ans: ["mustache"],
+            },
+            {
+              id: "4_5",
+              type: "text",
+              imgSrc: "images/Picture6.png",
+              q: "5. _ xc _ t _ ng",
+              ans: ["exciting"],
+            },
+            {
+              id: "4_6",
+              type: "text",
+              imgSrc: "images/Picture7.png",
+              q: "6. t _ r _    _ ig _ t",
+              ans: ["turn right"],
+            },
+            {
+              id: "4_7",
+              type: "text",
+              imgSrc: "images/Picture8.png",
+              q: "7. ho _ _ i t _ l",
+              ans: ["hospital"],
+            },
+            {
+              id: "4_8",
+              type: "text",
+              imgSrc: "images/Picture9.png",
+              q: "8. _ o the l _ u _ d _ _",
+              ans: ["do the laundry"],
+            },
+          ],
+        },
+        {
+          id: "sec5",
+          title: "V. Reading Comprehension",
+          description: "Đọc đoạn văn và chọn đáp án đúng.",
+          questions: [
+            {
+              id: "5_1",
+              type: "mcq",
+              passage:
+                "Hello, I’m Tom. I have short, blond hair. I have big eyes and a big mouth. I go to school on foot. My father works on a farm. He’s a farmer. At home, I wash the dishes and water the plants. My sister sets the table. Last weekend, I was at the movie theater. It was exciting.",
+              q: "1. T/F: Tom goes to school on foot.",
+              options: ["True", "False"],
+              ans: 0,
+            },
+            {
+              id: "5_2",
+              type: "mcq",
+              q: "2. T/F: His father is a cashier.",
+              options: ["True", "False"],
+              ans: 1,
+            },
+            {
+              id: "5_3",
+              type: "mcq",
+              q: "3. T/F: At home, he washes the dishes.",
+              options: ["True", "False"],
+              ans: 0,
+            },
+            {
+              id: "5_4",
+              type: "mcq",
+              q: "4. T/F: Last weekend, he wasn't at the movie theater.",
+              options: ["True", "False"],
+              ans: 1,
+            },
+            {
+              id: "5_5",
+              type: "mcq",
+              passage:
+                "My name is Phuong. I live in Vietnam with my family. I am in grade 4 at Tran Quoc Toan Primary School. Every day, I go to school by motorbike. I go with my father.\n\nI go to school every morning from Monday to Friday. On Tuesday afternoon, I go to the library by taxi with my sisters. We read a lot of books there. On Wednesday afternoon, I go to the park on foot with my friends. We play badminton and hide and seek there. On Thursday afternoon, I go to the post office by bus. I go there to send a letter to my friend. On Fridays, I stay at home and read comic books. It’s so interesting.",
+              q: "1. Where does Phuong live?",
+              options: ["Vietnam", "England", "Australia", "America"],
+              ans: 0,
+            },
+            {
+              id: "5_6",
+              type: "mcq",
+              q: "2. How does she go to school?",
+              options: ["by bus", "by motorbike", "by train", "on foot"],
+              ans: 1,
+            },
+            {
+              id: "5_7",
+              type: "mcq",
+              q: "3. How does she go to the library?",
+              options: ["by taxi", "by train", "on foot", "by motorbike"],
+              ans: 0,
+            },
+            {
+              id: "5_8",
+              type: "mcq",
+              q: "4. How does she go to the post office?",
+              options: ["on foot", "by bus", "by train", "by car"],
+              ans: 1,
+            },
+            {
+              id: "5_9",
+              type: "mcq",
+              q: "5. How does she go to the park?",
+              options: ["on foot", "by taxi", "by motorbike", "by coach"],
+              ans: 0,
+            },
+            {
+              id: "5_10",
+              type: "mcq",
+              q: "6. Who does she go to the park with?",
+              options: ["mother", "father", "friends", "sisters"],
+              ans: 2,
+            },
+          ],
+        },
+        {
+          id: "sec6",
+          title: "VI. Look, read and complete",
+          description: "Nhìn hình và điền từ thích hợp vào chỗ trống.",
+          questions: [
+            {
+              id: "6_1",
+              type: "text",
+              imgSrc: "images/Picture10.png",
+              q: "1. She has _________ hair.",
+              ans: ["curly"],
+            },
+            {
+              id: "6_2",
+              type: "text",
+              imgSrc: "images/Picture11.png",
+              q: "2. How does Ricky help at home? \nHe _________.",
+              ans: ["sweeps the floor", "sweeps"],
+            },
+            {
+              id: "6_3",
+              type: "text",
+              imgSrc: "images/Picture12.png",
+              q: "3. Where were you yesterday? \nI was at the _________.",
+              ans: ["playground"],
+            },
+            {
+              id: "6_4",
+              type: "text",
+              imgSrc: "images/Picture13.png",
+              q: "4. What does that sign mean? \nIt means _________.",
+              ans: ["go straight"],
+            },
+            {
+              id: "6_5",
+              type: "text",
+              imgSrc: "images/Picture14.png",
+              q: "5. He's _________.",
+              ans: ["hungry"],
+            },
+            {
+              id: "6_6",
+              type: "text",
+              imgSrc: "/images/Picture15.png",
+              q: "6. I go to the _________ by bus.\nI go with my father and my uncle.",
+              ans: ["stadium by bus", "stadium / bus", "stadium bus"],
+            },
+            {
+              id: "6_7",
+              type: "text",
+              imgSrc: "images/Picture17.png",
+              q: "7. How do you help at home? \nWe _________.",
+              ans: ["set the table"],
+            },
+            {
+              id: "6_8",
+              type: "text",
+              imgSrc: "images/Picture18.png",
+              q: "8. Where is the restaurant? \nIt's _________ the hospital.",
+              ans: ["across from"],
+            },
+            {
+              id: "6_9",
+              type: "text",
+              imgSrc: "images/Picture19.png",
+              q: "9. My brother works at a bank. \nHe's a/an _________.",
+              ans: ["clerk", "cashier"],
+            },
+            {
+              id: "6_10",
+              type: "text",
+              imgSrc: "images/Picture20.png",
+              q: "10. How do you help at home? \nI _________.",
+              ans: ["do the laundry"],
+            },
+            {
+              id: "6_11",
+              type: "text",
+              imgSrc: "images/Picture21.png",
+              q: "11. How does Phong go to school? \nHe goes to school _________.",
+              ans: ["on foot"],
+            },
+            {
+              id: "6_12",
+              type: "text",
+              imgSrc: "images/Picture22.png",
+              q: "12. Were you at the museum _________? \nYes, I was.",
+              ans: ["last month"],
+            },
+          ],
+        },
+        {
+          id: "sec7",
+          title: "VII. Reorder the words",
+          description:
+            "Sắp xếp lại các từ để thành câu hoàn chỉnh (Viết hoa chữ đầu, có dấu chấm/hỏi cuối câu nhé).",
+          questions: [
+            {
+              id: "7_1",
+              type: "text",
+              q: "1. do/ stadium/ ?/ How/ the/ I/ get/ to",
+              ans: ["How do I get to the stadium?"],
+            },
+            {
+              id: "7_2",
+              type: "text",
+              q: "2. My/ doesn’t/ eyes/ have/ brother/ ./ big/",
+              ans: ["My brother doesn't have big eyes."],
+            },
+            {
+              id: "7_3",
+              type: "text",
+              q: "3. sweeps/ Linh/ every day/ the/ floor/./",
+              ans: ["Linh sweeps the floor every day."],
+            },
+            {
+              id: "7_4",
+              type: "text",
+              q: "4. go/ I/ the library/ to/ by/ bus/./",
+              ans: ["I go to the library by bus."],
+            },
+            {
+              id: "7_5",
+              type: "text",
+              q: "5. the/ sister/ table/./ clears/ my/ At home,/",
+              ans: ["At home, my sister clears the table."],
+            },
+            {
+              id: "7_6",
+              type: "text",
+              q: "6. museum/uncle/My/works/a/at",
+              ans: ["My uncle works at a museum."],
+            },
+            {
+              id: "7_7",
+              type: "text",
+              q: "7. does/Where/uncle/your/work",
+              ans: ["Where does your uncle work?"],
+            },
+            {
+              id: "7_8",
+              type: "text",
+              q: "8. John/hungry./and/were/his friends",
+              ans: ["John and his friends were hungry."],
+            },
+            {
+              id: "7_9",
+              type: "text",
+              q: "9. Sunday?/Were/last/you/the/supermarket/at",
+              ans: ["Were you at the supermarket last Sunday?"],
+            },
+            {
+              id: "7_10",
+              type: "text",
+              q: "10. at/ theater/ He /the/ was/ movie/ last night",
+              ans: ["He was at the movie theater last night."],
+            },
+            {
+              id: "7_11",
+              type: "text",
+              q: "11. were / and/ I/ the/ beach/ at/./ my/ aunt/ last month",
+              ans: ["My aunt and I were at the beach last month."],
+            },
+            {
+              id: "7_12",
+              type: "text",
+              q: "12. My mother/ put / groceries/ away/ and I/./",
+              ans: [
+                "My mother and I put away groceries.",
+                "I and my mother put away groceries.",
+              ],
+            },
+            {
+              id: "7_13",
+              type: "text",
+              q: "13. at/ theater/ Kate/ the/ was/ movie/ yesterday.",
+              ans: ["Kate was at the movie theater yesterday."],
+            },
+            {
+              id: "7_14",
+              type: "text",
+              q: "14. My/ a/ has/ and/ big/ nose/ brother /big/ mouth/ a",
+              ans: ["My brother has a big nose and a big mouth."],
+            },
+            {
+              id: "7_15",
+              type: "text",
+              q: "15. your/ Don’t/ sunny/ on/ scarf/ put/ it’s/ because/ .",
+              ans: [
+                "Don't put on your scarf because it's sunny.",
+                "Do not put on your scarf because it is sunny.",
+              ],
+            },
+            {
+              id: "7_16",
+              type: "text",
+              q: "16. you/ last/ Were/ at/ movie/ Sunday/ the/ theater/ ?",
+              ans: ["Were you at the movie theater last Sunday?"],
+            },
+            {
+              id: "7_17",
+              type: "text",
+              q: "17. go/ to/ and/ get/ straight/ zoo/ turn/ can/ He/ to/ the/ left/ .",
+              ans: [
+                "He can go straight and turn left to get to the zoo.",
+                "He can turn left and go straight to get to the zoo.",
+              ],
+            },
+            {
+              id: "7_18",
+              type: "text",
+              q: "18. I/ at/ with/ amusement park/ brother/ my/ was/ the/ yesterday/.",
+              ans: [
+                "I was at the amusement park with my brother yesterday.",
+                "Yesterday I was at the amusement park with my brother.",
+              ],
+            },
+            {
+              id: "7_19",
+              type: "text",
+              q: "19. Sunday / were / family / I / beach / and / the / my / on / last",
+              ans: [
+                "My family and I were on the beach last Sunday.",
+                "I and my family were on the beach last Sunday.",
+              ],
+            },
+            {
+              id: "7_20",
+              type: "text",
+              q: "20. ninth / April / birthday / of / on / Her / the / is",
+              ans: ["Her birthday is on the ninth of April."],
+            },
+            {
+              id: "7_21",
+              type: "text",
+              q: "21. bed / fifteen / younger / at / to / brother / goes / My / nine",
+              ans: ["My younger brother goes to bed at nine fifteen."],
+            },
+          ],
+        },
+        {
+          id: "sec8",
+          title: "VIII. Find the incorrect word",
+          description: "Chọn từ bị sai trong câu.",
+          questions: [
+            {
+              id: "8_1",
+              type: "mcq",
+              q: "1. There is a books and a pen on the table.",
+              options: ["There", "is", "books", "on"],
+              ans: 1,
+            },
+            {
+              id: "8_2",
+              type: "mcq",
+              q: "2. She go to the bakery to buy some bread every Sunday.",
+              options: ["go", "to the", "to buy", "every"],
+              ans: 0,
+            },
+            {
+              id: "8_3",
+              type: "mcq",
+              q: "3. The post office are next to the bank.",
+              options: ["The", "are", "next", "to"],
+              ans: 1,
+            },
+            {
+              id: "8_4",
+              type: "mcq",
+              q: "4. We go to the cinema to buy some food and milk.",
+              options: ["We", "to", "cinema", "some"],
+              ans: 2,
+            },
+            {
+              id: "8_5",
+              type: "mcq",
+              q: "5. My brother must cleans the toys in my family.",
+              options: ["must", "cleans", "toys", "in"],
+              ans: 1,
+            },
+            {
+              id: "8_6",
+              type: "mcq",
+              q: "6. She likes to reading books at the library.",
+              options: ["likes", "reading", "at", "library"],
+              ans: 1,
+            },
+          ],
+        },
+        {
+          id: "sec9",
+          title: "IX. Multiple Choice",
+          description: "Chọn đáp án đúng nhất để điền vào chỗ trống.",
+          questions: [
+            {
+              id: "9_1",
+              type: "mcq",
+              q: "1. They are __________ soccer in the park.",
+              options: ["play", "playing", "played", "plays"],
+              ans: 1,
+            },
+            {
+              id: "9_2",
+              type: "mcq",
+              q: "2. My sister is wearing a pink __________ on her neck.",
+              options: ["scarf", "sandals", "backpack", "bookcase"],
+              ans: 0,
+            },
+            {
+              id: "9_3",
+              type: "mcq",
+              q: "3. He wears __________ when it is sunny to protect his eyes.",
+              options: ["dress", "sunglasses", "raincoat", "football"],
+              ans: 1,
+            },
+            {
+              id: "9_4",
+              type: "mcq",
+              q: "4. The farmer wakes up early to __________ the cows.",
+              options: ["brush", "milk", "fix", "sleep"],
+              ans: 1,
+            },
+            {
+              id: "9_5",
+              type: "mcq",
+              q: "5. I and my sister __________ at the water park this morning.",
+              options: ["was", "were", "are", "is"],
+              ans: 1,
+            },
+            {
+              id: "9_6",
+              type: "mcq",
+              q: "6. My dad is cleaning the __________ in the living room.",
+              options: ["sofa", "tent", "cow", "donkey"],
+              ans: 0,
+            },
+            {
+              id: "9_7",
+              type: "mcq",
+              q: "7. We use __________ to keep our teeth clean.",
+              options: ["torch", "toothpaste", "socks", "jeans"],
+              ans: 1,
+            },
+            {
+              id: "9_8",
+              type: "mcq",
+              q: "8. She put her books and laptop in her __________ before going to school.",
+              options: ["television", "backpack", "scarf", "armchair"],
+              ans: 1,
+            },
+            {
+              id: "9_9",
+              type: "mcq",
+              q: "9. The weather is very __________ in winter, so I wear a warm coat.",
+              options: ["sunny", "hot", "cold", "warm"],
+              ans: 2,
+            },
+            {
+              id: "9_10",
+              type: "mcq",
+              q: "10. We were at home __________ Sunday with our parents.",
+              options: ["on", "at", "in", "in the"],
+              ans: 0,
+            },
+            {
+              id: "9_11",
+              type: "mcq",
+              q: "11. They ________ at the museum yesterday.",
+              options: ["are", "was", "were", "do"],
+              ans: 2,
+            },
+            {
+              id: "9_12",
+              type: "mcq",
+              q: "12. My sister likes ________ to new places on holiday.",
+              options: ["fly", "to fly", "flies", "flying"],
+              ans: 3,
+            },
+            {
+              id: "9_13",
+              type: "mcq",
+              q: "13. He’d like ________ Cuc Phuong National Park",
+              options: ["visit", "visiting", "to visit", "visits"],
+              ans: 2,
+            },
+            {
+              id: "9_14",
+              type: "mcq",
+              q: "14. My mother works in a hospital. She take care ________ people.",
+              options: ["in", "of", "on", "with"],
+              ans: 1,
+            },
+            {
+              id: "9_15",
+              type: "mcq",
+              q: "15. ____________ phone is it? - It’s her phone.",
+              options: ["Whose", "What", "Who", "How"],
+              ans: 0,
+            },
+            {
+              id: "9_16",
+              type: "mcq",
+              q: "16. _______ Hoa at the playground yesterday? – No, she wasn’t.",
+              options: ["Was", "Does", "Is", "Were"],
+              ans: 0,
+            },
+          ],
+        },
+        {
+          id: "sec10",
+          title: "X. Read and answer",
+          description: "Đọc đoạn văn và trả lời câu hỏi về gia đình Minh.",
+          questions: [
+            {
+              id: "10_1",
+              type: "text",
+              passage:
+                "This is Minh. He is twenty-three years old and he is an engineer. There are five people in his family. They are: his father, his mother, his two sisters and him. His father is fifty and he is also an engineer. He works in a construction company. His mother is forty-eight years old. She is a doctor and she works in a local hospital. His sisters are twelve and seventeen. Both of them are students.",
+              q: "1. What does Minh do?",
+              ans: ["He is an engineer.", "He is an engineer"],
+            },
+            {
+              id: "10_2",
+              type: "text",
+              q: "2. How many people are there in Minh’s family?",
+              ans: [
+                "There are five people in his family.",
+                "There are five people.",
+                "Five people",
+                "5",
+              ],
+            },
+            {
+              id: "10_3",
+              type: "text",
+              q: "3. What does his father do?",
+              ans: [
+                "He is also an engineer.",
+                "He is an engineer.",
+                "His father is an engineer.",
+              ],
+            },
+            {
+              id: "10_4",
+              type: "text",
+              q: "4. Where does his mother work?",
+              ans: [
+                "She works in a local hospital.",
+                "She works in a hospital.",
+                "In a hospital.",
+                "In a local hospital.",
+              ],
+            },
+            {
+              id: "10_5",
+              type: "text",
+              q: "5. How many sisters does he have?",
+              ans: [
+                "He has two sisters.",
+                "He has 2 sisters.",
+                "Two sisters.",
+                "Two",
+                "2",
+              ],
+            },
+          ],
+        },
+      ];
+
+      // --- GACHA ITEMS ---
+      const GACHA_ITEMS = [
+        {
+          name: "Chiếc tất rách",
+          rarity: "terrible",
+          weight: 30,
+          desc: "Cái này... nên vứt đi thì hơn.",
+        },
+        {
+          name: "Cục gôm cắn dở",
+          rarity: "terrible",
+          weight: 30,
+          desc: "Trông hơi kì nhưng vẫn xài được.",
+        },
+        {
+          name: "Bút chì gãy ruột",
+          rarity: "terrible",
+          weight: 30,
+          desc: "Gọt mỏi tay luôn!",
+        },
+
+        {
+          name: "Kẹo dâu tây",
+          rarity: "common",
+          weight: 40,
+          desc: "Ngọt ngào như một lời khen.",
+        },
+        {
+          name: "Nhãn vở siêu nhân",
+          rarity: "common",
+          weight: 40,
+          desc: "Đủ dùng cho năm học mới.",
+        },
+        {
+          name: "Sticker ngôi sao",
+          rarity: "common",
+          weight: 40,
+          desc: "Cô giáo tiếng Anh rất thích tặng cái này.",
+        },
+
+        {
+          name: "Hộp bút Capybara",
+          rarity: "rare",
+          weight: 20,
+          desc: "Vô cùng dễ thương và vô tri!",
+        },
+        {
+          name: "Trà sữa full topping",
+          rarity: "rare",
+          weight: 20,
+          desc: "Cứu rỗi một ngày học tập mệt mỏi.",
+        },
+        {
+          name: "Móc khóa Loopy",
+          rarity: "rare",
+          weight: 20,
+          desc: "Lúc nào cũng cười tủm tỉm.",
+        },
+
+        {
+          name: "Ba lô Kuromi",
+          rarity: "epic",
+          weight: 8,
+          desc: "Bao ngầu, bao cá tính!",
+        },
+        {
+          name: "Mô hình Labubu",
+          rarity: "epic",
+          weight: 8,
+          desc: "Đang cực kì hot trend nhé!",
+        },
+
+        {
+          name: "Vương miện công chúa",
+          rarity: "legendary",
+          weight: 2,
+          desc: "Chỉ dành cho học sinh xuất sắc nhất!",
+        },
+        {
+          name: "Điểm 10 Tiếng Anh",
+          rarity: "legendary",
+          weight: 2,
+          desc: "Món quà tuyệt vời nhất trần đời! 💯",
+        },
+      ];
+
+      // --- ICONS (SVG) ---
+      const CoinsIcon = () => (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-yellow-500 inline-block"
+        >
+          <circle cx="8" cy="8" r="6" />
+          <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+          <path d="M7 6h1v4" />
+          <path d="m16.71 13.88.7.71-2.82 2.82" />
+        </svg>
+      );
+
+      const GiftIcon = () => (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="text-pink-500 inline-block"
+        >
+          <rect x="3" y="8" width="18" height="4" rx="1" />
+          <path d="M12 8v13" />
+          <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
+          <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
+        </svg>
+      );
+
+      const StarIcon = ({ filled = false, className = "" }) => (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill={filled ? "currentColor" : "none"}
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={`text-yellow-400 ${className}`}
+        >
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 6.91 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      );
+
+      // --- UTILS ---
+      const normalizeText = (text) => {
+        if (!text) return "";
+        return text
+          .toLowerCase()
+          .replace(/['".,?!\-]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      };
+
+      const isTextCorrect = (userAns, correctAnswersArray) => {
+        const normUser = normalizeText(userAns);
+        return correctAnswersArray.some(
+          (ans) => normalizeText(ans) === normUser
+        );
+      };
+
+      // --- COMPONENTS ---
+      const App = () => {
+        const [view, setView] = React.useState("dashboard");
+        const [activeSecId, setActiveSecId] = React.useState(null);
+
+        // State: Progress and Answers
+        const [userAnswers, setUserAnswers] = React.useState({});
+        const [submitted, setSubmitted] = React.useState({});
+        const [rewardedQs, setRewardedQs] = React.useState({});
+
+        // State: Economy
+        const [coins, setCoins] = React.useState(0);
+        const [inventory, setInventory] = React.useState([]);
+
+        // Helper: Get section stats
+        const getSectionStats = (secId) => {
+          const section = GAME_DATA.find((s) => s.id === secId);
+          const answers = userAnswers[secId] || {};
+          const isSub = submitted[secId] || false;
+
+          let correctCount = 0;
+          if (isSub) {
+            section.questions.forEach((q) => {
+              if (q.type === "mcq") {
+                if (answers[q.id] === q.ans) correctCount++;
+              } else if (q.type === "text") {
+                if (isTextCorrect(answers[q.id], q.ans)) correctCount++;
+              }
+            });
+          }
+          return {
+            correct: correctCount,
+            total: section.questions.length,
+            isSubmitted: isSub,
+          };
+        };
+
+        const handleGoToDashboard = () => {
+          setView("dashboard");
+          setActiveSecId(null);
+        };
+
+        const handleStartQuiz = (secId) => {
+          setActiveSecId(secId);
+          setView("quiz");
+        };
+
+        return (
+          <div className="max-w-4xl mx-auto min-h-screen p-4 pb-20">
+            {/* Header */}
+            <div className="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-pink-100 mb-6">
+              <div>
+                <h1 className="text-2xl font-extrabold text-pink-500 tracking-tight">
+                  Grade 4 English
+                </h1>
+                <p className="text-sm text-gray-500 font-medium">
+                  Cô giáo xinh đẹp gửi tặng bạn nè!
+                </p>
+              </div>
+              <div className="flex flex-col items-end gap-2">
+                <div className="flex items-center gap-2 bg-yellow-50 px-4 py-2 rounded-full border border-yellow-200">
+                  <span className="font-bold text-yellow-600 text-lg">
+                    {coins}
+                  </span>
+                  <CoinsIcon />
+                </div>
+                {view !== "gacha" && (
+                  <button
+                    onClick={() => setView("gacha")}
+                    className="gacha-btn flex items-center gap-2 bg-gradient-to-r from-pink-400 to-purple-400 text-white px-4 py-2 rounded-full font-bold shadow-md text-sm"
+                  >
+                    <GiftIcon /> Mở quà (50 vàng)
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Views */}
+            {view === "dashboard" && (
+              <Dashboard
+                data={GAME_DATA}
+                getSectionStats={getSectionStats}
+                onStartQuiz={handleStartQuiz}
+              />
+            )}
+            {view === "quiz" && (
+              <Quiz
+                section={GAME_DATA.find((s) => s.id === activeSecId)}
+                userAnswers={userAnswers}
+                setUserAnswers={setUserAnswers}
+                submitted={submitted}
+                setSubmitted={setSubmitted}
+                rewardedQs={rewardedQs}
+                setRewardedQs={setRewardedQs}
+                coins={coins}
+                setCoins={setCoins}
+                onBack={handleGoToDashboard}
+              />
+            )}
+            {view === "gacha" && (
+              <GachaSystem
+                coins={coins}
+                setCoins={setCoins}
+                inventory={inventory}
+                setInventory={setInventory}
+                onBack={handleGoToDashboard}
+              />
+            )}
+          </div>
+        );
+      };
+
+      const Dashboard = ({ data, getSectionStats, onStartQuiz }) => {
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-gray-700 flex items-center gap-2">
+              <StarIcon filled className="text-pink-400" />
+              Nhiệm vụ hôm nay (Tổng cộng 10 bài)
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {data.map((sec) => {
+                const stats = getSectionStats(sec.id);
+                const isDone =
+                  stats.isSubmitted && stats.correct === stats.total;
+
+                return (
+                  <div
+                    key={sec.id}
+                    className={`bg-white p-5 rounded-2xl shadow-sm border-2 transition-all hover:shadow-md flex flex-col justify-between ${
+                      isDone
+                        ? "border-green-300 bg-green-50"
+                        : "border-pink-100 hover:border-pink-300"
+                    }`}
+                  >
+                    <div>
+                      <h3
+                        className="font-bold text-lg text-gray-800 line-clamp-1"
+                        title={sec.title}
+                      >
+                        {sec.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1 h-8">
+                        {sec.description}
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="mt-4 flex justify-between items-center">
+                        <div className="text-sm font-semibold text-gray-600">
+                          <span
+                            className={
+                              isDone ? "text-green-600" : "text-pink-500"
+                            }
+                          >
+                            {stats.correct} / {stats.total}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => onStartQuiz(sec.id)}
+                          className={`px-4 py-2 rounded-xl font-bold text-sm text-white shadow-sm transition-transform active:scale-95 ${
+                            stats.isSubmitted
+                              ? isDone
+                                ? "bg-green-400"
+                                : "bg-blue-400"
+                              : "bg-pink-400"
+                          }`}
+                        >
+                          {stats.isSubmitted
+                            ? isDone
+                              ? "Xem lại"
+                              : "Làm lại"
+                            : "Bắt đầu"}
+                        </button>
+                      </div>
+
+                      {/* Progress bar */}
+                      <div className="w-full bg-gray-100 rounded-full h-2.5 mt-3">
+                        <div
+                          className={`h-2.5 rounded-full ${
+                            isDone ? "bg-green-400" : "bg-pink-400"
+                          }`}
+                          style={{
+                            width: `${(stats.correct / stats.total) * 100}%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      };
+
+      const Quiz = ({
+        section,
+        userAnswers,
+        setUserAnswers,
+        submitted,
+        setSubmitted,
+        rewardedQs,
+        setRewardedQs,
+        coins,
+        setCoins,
+        onBack,
+      }) => {
+        const secId = section.id;
+        const answers = userAnswers[secId] || {};
+        const isSub = submitted[secId] || false;
+
+        const handleMcqSelect = (qId, optionIndex) => {
+          if (isSub) return;
+          setUserAnswers((prev) => ({
+            ...prev,
+            [secId]: { ...(prev[secId] || {}), [qId]: optionIndex },
+          }));
+        };
+
+        const handleTextChange = (qId, textValue) => {
+          if (isSub) return;
+          setUserAnswers((prev) => ({
+            ...prev,
+            [secId]: { ...(prev[secId] || {}), [qId]: textValue },
+          }));
+        };
+
+        const handleSubmit = () => {
+          if (isSub) {
+            setSubmitted((prev) => ({ ...prev, [secId]: false }));
+            return;
+          }
+
+          let newCoins = 0;
+          let newRewarded = { ...rewardedQs };
+
+          section.questions.forEach((q) => {
+            let isCorrect = false;
+            if (q.type === "mcq") {
+              isCorrect = answers[q.id] === q.ans;
+            } else if (q.type === "text") {
+              isCorrect = isTextCorrect(answers[q.id], q.ans);
+            }
+
+            if (isCorrect && !rewardedQs[q.id]) {
+              newCoins += 10;
+              newRewarded[q.id] = true;
+            }
+          });
+
+          if (newCoins > 0) {
+            setCoins((prev) => prev + newCoins);
+            alert(`Tuyệt vời! Bạn trả lời đúng và nhận được ${newCoins} vàng!`);
+          } else {
+            alert("Chưa có câu nào kiếm thêm được vàng cả, cố gắng lên nhé!");
+          }
+
+          setRewardedQs(newRewarded);
+          setSubmitted((prev) => ({ ...prev, [secId]: true }));
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+
+        let correctCount = 0;
+        if (isSub) {
+          section.questions.forEach((q) => {
+            if (q.type === "mcq") {
+              if (answers[q.id] === q.ans) correctCount++;
+            } else if (q.type === "text") {
+              if (isTextCorrect(answers[q.id], q.ans)) correctCount++;
+            }
+          });
+        }
+
+        return (
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-pink-100">
+            <button
+              onClick={onBack}
+              className="flex items-center gap-1 text-gray-500 hover:text-pink-500 font-semibold mb-4 transition-colors"
+            >
+              ← Quay lại
+            </button>
+
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              {section.title}
+            </h2>
+            <p className="text-gray-500 mb-6">{section.description}</p>
+
+            {isSub && (
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between">
+                <div>
+                  <h3 className="font-bold text-blue-800">Kết quả của bạn</h3>
+                  <p className="text-blue-600">
+                    Đúng {correctCount} / {section.questions.length} câu
+                  </p>
+                </div>
+                <div className="text-3xl">
+                  {correctCount === section.questions.length ? "🌟" : "👍"}
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-6">
+              {section.questions.map((q, idx) => {
+                const userAnswer = answers[q.id];
+
+                let isCorrect = false;
+                if (isSub) {
+                  if (q.type === "mcq") isCorrect = userAnswer === q.ans;
+                  if (q.type === "text")
+                    isCorrect = isTextCorrect(userAnswer, q.ans);
+                }
+
+                let boxClass = `p-5 rounded-2xl border-2 transition-colors ${
+                  isSub
+                    ? isCorrect
+                      ? "border-green-200 bg-green-50"
+                      : "border-red-200 bg-red-50"
+                    : "border-gray-100 bg-gray-50"
+                }`;
+
+                return (
+                  <div key={q.id}>
+                    {/* Render Passage (Đoạn văn) if it exists */}
+                    {q.passage && (
+                      <div className="mb-6 p-5 bg-amber-50 border border-amber-200 rounded-2xl shadow-sm">
+                        <p className="text-amber-900 font-medium whitespace-pre-wrap leading-relaxed">
+                          {q.passage}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className={boxClass}>
+                      {/* Render Image Placeholder if it exists */}
+                      {q.hasOwnProperty("imgSrc") && (
+                        <div className="mb-4 flex justify-center">
+                          {q.imgSrc ? (
+                            <img
+                              src={q.imgSrc}
+                              alt="Question"
+                              className="max-h-48 rounded-xl border border-gray-200 shadow-sm"
+                            />
+                          ) : (
+                            <div className="w-full max-w-sm h-32 bg-pink-50 border-2 border-dashed border-pink-300 rounded-xl flex flex-col items-center justify-center text-pink-400 font-semibold text-center p-4">
+                              <span>🖼️ Chỗ chèn ảnh</span>
+                              <span className="text-xs font-normal mt-1 text-pink-400/70">
+                                Thay imgSrc: "" bằng link ảnh vào file code
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <p className="font-bold text-gray-800 mb-4 text-lg whitespace-pre-wrap">
+                        {q.q}
+                      </p>
+
+                      {q.type === "mcq" && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {q.options.map((opt, optIdx) => {
+                            const isSelected = userAnswer === optIdx;
+                            const isTrueAns = q.ans === optIdx;
+
+                            let btnClass =
+                              "w-full text-left p-3 rounded-xl border-2 font-medium transition-all ";
+
+                            if (isSub) {
+                              if (isTrueAns)
+                                btnClass +=
+                                  "border-green-500 bg-green-100 text-green-800";
+                              else if (isSelected && !isTrueAns)
+                                btnClass +=
+                                  "border-red-400 bg-red-100 text-red-800 line-through";
+                              else
+                                btnClass +=
+                                  "border-gray-200 bg-white text-gray-400 opacity-60";
+                            } else {
+                              if (isSelected)
+                                btnClass +=
+                                  "border-pink-400 bg-pink-50 text-pink-700 shadow-sm";
+                              else
+                                btnClass +=
+                                  "border-gray-200 bg-white text-gray-600 hover:border-pink-200 hover:bg-pink-50/50";
+                            }
+
+                            return (
+                              <button
+                                key={optIdx}
+                                onClick={() => handleMcqSelect(q.id, optIdx)}
+                                className={btnClass}
+                                disabled={isSub}
+                              >
+                                <span className="inline-block w-6 h-6 text-center rounded-full bg-white/50 border border-current mr-2 text-sm leading-5">
+                                  {["A", "B", "C", "D"][optIdx]}
+                                </span>
+                                {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {q.type === "text" && (
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="Gõ đáp án của bạn vào đây..."
+                            value={userAnswer || ""}
+                            onChange={(e) =>
+                              handleTextChange(q.id, e.target.value)
+                            }
+                            disabled={isSub}
+                            className={`w-full p-3 rounded-xl border-2 font-medium bg-white text-gray-800 ${
+                              isSub
+                                ? isCorrect
+                                  ? "border-green-400"
+                                  : "border-red-400 text-red-600 line-through opacity-80"
+                                : "border-gray-200 hover:border-pink-200"
+                            }`}
+                          />
+                        </div>
+                      )}
+
+                      {isSub && !isCorrect && (
+                        <div className="mt-3 text-sm text-red-600 font-semibold bg-red-100/70 p-3 rounded-lg inline-block border border-red-200">
+                          Đáp án đúng là: <br />
+                          <span className="text-base font-bold text-red-700">
+                            {q.type === "mcq" ? q.options[q.ans] : q.ans[0]}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="mt-8 text-center border-t border-gray-100 pt-6">
+              <button
+                onClick={handleSubmit}
+                className={`px-8 py-3 rounded-full font-bold text-lg text-white shadow-lg transition-transform active:scale-95 ${
+                  isSub
+                    ? "bg-blue-500 hover:bg-blue-600"
+                    : "bg-pink-500 hover:bg-pink-600"
+                }`}
+              >
+                {isSub ? "Làm lại phần này" : "Nộp bài & Nhận thưởng"}
+              </button>
+            </div>
+          </div>
+        );
+      };
+
+      const GachaSystem = ({
+        coins,
+        setCoins,
+        inventory,
+        setInventory,
+        onBack,
+      }) => {
+        const [isRolling, setIsRolling] = React.useState(false);
+        const [pulledItem, setPulledItem] = React.useState(null);
+
+        const cost = 50;
+
+        const pullGacha = () => {
+          if (coins < cost) {
+            alert("Bạn không đủ vàng rồi! Hãy làm thêm bài tập nhé!");
+            return;
+          }
+
+          setCoins((prev) => prev - cost);
+          setIsRolling(true);
+          setPulledItem(null);
+
+          setTimeout(() => {
+            let totalWeight = GACHA_ITEMS.reduce(
+              (sum, item) => sum + item.weight,
+              0
+            );
+            let randomNum = Math.random() * totalWeight;
+
+            let selected = GACHA_ITEMS[0];
+            for (let item of GACHA_ITEMS) {
+              if (randomNum < item.weight) {
+                selected = item;
+                break;
+              }
+              randomNum -= item.weight;
+            }
+
+            setPulledItem(selected);
+            setInventory((prev) => [selected, ...prev]);
+            setIsRolling(false);
+          }, 1500);
+        };
+
+        const getRarityLabel = (rarity) => {
+          switch (rarity) {
+            case "terrible":
+              return "Tệ (Terrible)";
+            case "common":
+              return "Thường (Common)";
+            case "rare":
+              return "Hiếm (Rare)";
+            case "epic":
+              return "Cực hiếm (Epic)";
+            case "legendary":
+              return "Huyền thoại (Legendary)";
+            default:
+              return "";
+          }
+        };
+
+        return (
+          <div className="space-y-6">
+            <button
+              onClick={onBack}
+              className="flex items-center gap-1 text-gray-500 hover:text-pink-500 font-semibold transition-colors bg-white px-4 py-2 rounded-full shadow-sm w-max"
+            >
+              ← Trở về học bài
+            </button>
+
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-pink-100 text-center relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300"></div>
+
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500 mb-2 mt-4">
+                Hộp Quà May Mắn
+              </h2>
+              <p className="text-gray-500 font-medium mb-8">
+                Mỗi lần mở tốn {cost} vàng. Thử vận may nào!
+              </p>
+
+              <div className="mb-8 min-h-[250px] flex flex-col justify-center items-center">
+                {isRolling ? (
+                  <div className="text-6xl shake">🎁</div>
+                ) : pulledItem ? (
+                  <div
+                    className={`p-6 rounded-2xl border-4 max-w-sm w-full mx-auto animate-bounce shadow-lg item-${pulledItem.rarity}`}
+                  >
+                    <div className="text-xs font-bold uppercase tracking-wider mb-2 opacity-80">
+                      {getRarityLabel(pulledItem.rarity)}
+                    </div>
+                    <h3 className="text-2xl font-black mb-2">
+                      {pulledItem.name}
+                    </h3>
+                    <p className="opacity-90 font-medium">{pulledItem.desc}</p>
+                  </div>
+                ) : (
+                  <div
+                    className="text-8xl opacity-80 hover:scale-110 transition-transform cursor-pointer"
+                    onClick={pullGacha}
+                  >
+                    🎁
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={pullGacha}
+                disabled={isRolling || coins < cost}
+                className={`px-8 py-4 rounded-2xl font-black text-xl text-white shadow-xl transition-all ${
+                  isRolling || coins < cost
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-gradient-to-r from-pink-500 hover:from-pink-400 to-purple-500 hover:to-purple-400 active:scale-95"
+                }`}
+              >
+                Mở hộp quà ({cost} <CoinsIcon />)
+              </button>
+            </div>
+
+            {/* Inventory */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+              <h3 className="font-bold text-xl text-gray-700 mb-4 flex items-center gap-2">
+                🎒 Kho đồ của bạn ({inventory.length})
+              </h3>
+              {inventory.length === 0 ? (
+                <p className="text-gray-400 text-center italic py-4">
+                  Kho đồ đang trống. Hãy đi học bài kiếm vàng mở quà nhé!
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {inventory.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-3 rounded-xl border-2 item-${item.rarity}`}
+                    >
+                      <div className="text-[10px] font-bold uppercase mb-1 opacity-70">
+                        {item.rarity}
+                      </div>
+                      <div className="font-bold text-sm">{item.name}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
